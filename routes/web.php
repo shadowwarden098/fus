@@ -4,7 +4,9 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\view;
 use App\Models\Estudiante;
+use App\Models\Dios;
 use App\Http\Controllers\Estudiantes\EstudiantesController;
+use App\Http\Controllers\Dioses\DiosesController;
 
 
 
@@ -18,12 +20,6 @@ $estudiante->save();
 
 return $estudiante;
 */
-
-
-
-
-
-
 
 return view('welcome');
 });
@@ -42,3 +38,6 @@ Route::get('/clan', function () {
 })->name('clan' );
 
 Route::get('/estudiantes/index', [EstudiantesController::class, 'index'])->name('estudiantes.index');
+
+
+Route::get('/dioses/index', [DiosesController::class, 'index'])->name('dioses.index');

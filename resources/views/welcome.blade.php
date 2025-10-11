@@ -84,5 +84,6 @@
   <a href="{{ route('clan') }}">clan</a>
   <a href="{{ route('bienvenidos') }}">bienvenidos</a>
   <a href="{{ route('estudiantes.index') }}">estudiantes</a>
+  <a href="{{ route('dioses.index') }}">dioses</a>
 </body>
 </html>
