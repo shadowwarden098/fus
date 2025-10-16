@@ -47,7 +47,14 @@ Route::delete('/estudiantes/{id}', [EstudiantesController::class, 'destroy'])->n
 
 
 
+// 🛐 RUTAS DE DIOSES
 Route::get('/dioses/index', [DiosesController::class, 'index'])->name('dioses.index');
+Route::get('/dioses/create', [DiosesController::class, 'create'])->name('dioses.create');
+Route::post('/dioses', [DiosesController::class, 'store'])->name('dioses.store');
+Route::get('/dioses/{id}/edit', [DiosesController::class, 'edit'])->name('dioses.edit');
+Route::put('/dioses/{id}', [DiosesController::class, 'update'])->name('dioses.update');
+Route::delete('/dioses/{id}', [DiosesController::class, 'destroy'])->name('dioses.destroy');
+
 
 Route::get('/jugadores', [JugadoresController::class, 'index'])->name('jugadores.index');
 Route::get('/jugadores/create', [JugadoresController::class, 'create'])->name('jugadores.create');

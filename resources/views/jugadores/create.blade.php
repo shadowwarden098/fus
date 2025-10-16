@@ -280,6 +280,8 @@
                 particlesContainer.appendChild(particle);
             }
         });
+
+
     </script>
 </body>
 </html>

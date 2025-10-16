@@ -255,7 +255,7 @@
                     @foreach ($estudiantes as $estudiante)
                         <li class="student-card">
                             <div class="student-info">
-                                <div class="student-name">{{ $estudiante->nombres }} {{ $estudiante->apellidos }}</div>
+                                <div class="student-name">{{ $estudiante->nombre }} {{ $estudiante->apellido }}</div>
                                 <div class="student-details">DNI: {{ $estudiante->dni }}</div>
                             </div>
                             <form action="{{ route('estudiantes.destroy', $estudiante->id) }}" method="POST" onsubmit="return confirm('¿Eliminar registro permanentemente?')">
