@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\view;
 use App\Models\Estudiante;
@@ -22,14 +21,12 @@ $estudiante->save();
 
 return $estudiante;
 */
-
-return view('welcome');
+    return view('welcome');
 });
 
 Route::get('/hola', function () {
     return '"No importa cuánto sufras, nunca cambies quién eres."';
-})->name('senin' );
-
+})->name('senin');
 
 Route::get('/bienvenidos', function () {
     return view('bienvenidos');
@@ -37,14 +34,19 @@ Route::get('/bienvenidos', function () {
 
 Route::get('/clan', function () {
     return view('clan');
-})->name('clan' );
+})->name('clan');
+
 
 // 🧑‍🎓 RUTAS DE ESTUDIANTES
 Route::get('/estudiantes/index', [EstudiantesController::class, 'index'])->name('estudiantes.index');
 Route::get('/estudiantes/create', [EstudiantesController::class, 'create'])->name('estudiantes.create');
 Route::post('/estudiantes', [EstudiantesController::class, 'store'])->name('estudiantes.store');
-Route::delete('/estudiantes/{id}', [EstudiantesController::class, 'destroy'])->name('estudiantes.destroy');
 
+// 🔹 NUEVAS rutas para editar y actualizar estudiantes
+Route::get('/estudiantes/{id}/edit', [EstudiantesController::class, 'edit'])->name('estudiantes.edit');
+Route::put('/estudiantes/{id}', [EstudiantesController::class, 'update'])->name('estudiantes.update');
+
+Route::delete('/estudiantes/{id}', [EstudiantesController::class, 'destroy'])->name('estudiantes.destroy');
 
 
 // 🛐 RUTAS DE DIOSES
@@ -56,6 +58,7 @@ Route::put('/dioses/{id}', [DiosesController::class, 'update'])->name('dioses.up
 Route::delete('/dioses/{id}', [DiosesController::class, 'destroy'])->name('dioses.destroy');
 
 
+// 🎮 RUTAS DE JUGADORES
 Route::get('/jugadores', [JugadoresController::class, 'index'])->name('jugadores.index');
 Route::get('/jugadores/create', [JugadoresController::class, 'create'])->name('jugadores.create');
 Route::post('/jugadores', [JugadoresController::class, 'store'])->name('jugadores.store');

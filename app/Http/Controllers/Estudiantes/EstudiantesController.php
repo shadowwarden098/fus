@@ -25,12 +25,17 @@ class EstudiantesController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'codigo' => 'required|string|max:20|unique:estudiantes,codigo',
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
+            'segundo_apellido' => 'nullable|string|max:255',
+            'direccion' => 'nullable|string|max:255',
             'dni' => 'required|digits:8|unique:estudiantes,dni',
         ], [
+            'codigo.required' => 'El código del estudiante es obligatorio.',
+            'codigo.unique' => 'Este código ya está registrado.',
             'nombre.required' => 'El nombre es obligatorio.',
-            'apellido.required' => 'El apellido es obligatorio.',
+            'apellido.required' => 'El primer apellido es obligatorio.',
             'dni.required' => 'El DNI es obligatorio.',
             'dni.digits' => 'El DNI debe tener 8 dígitos.',
             'dni.unique' => 'Este DNI ya está registrado.',
@@ -40,6 +45,41 @@ class EstudiantesController extends Controller
 
         return redirect()->route('estudiantes.index')
                          ->with('success', 'Estudiante registrado correctamente.');
+    }
+
+    // ✏️ Formulario de edición
+    public function edit($id)
+    {
+        $estudiante = Estudiante::findOrFail($id);
+        return view('estudiantes.edit', compact('estudiante'));
+    }
+
+    // 🔁 Actualizar datos del estudiante
+    public function update(Request $request, $id)
+    {
+        $estudiante = Estudiante::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'codigo' => 'required|string|max:20|unique:estudiantes,codigo,' . $id,
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'segundo_apellido' => 'nullable|string|max:255',
+            'direccion' => 'nullable|string|max:255',
+            'dni' => 'required|digits:8|unique:estudiantes,dni,' . $id,
+        ], [
+            'codigo.required' => 'El código del estudiante es obligatorio.',
+            'codigo.unique' => 'Este código ya está registrado.',
+            'nombre.required' => 'El nombre es obligatorio.',
+            'apellido.required' => 'El primer apellido es obligatorio.',
+            'dni.required' => 'El DNI es obligatorio.',
+            'dni.digits' => 'El DNI debe tener 8 dígitos.',
+            'dni.unique' => 'Este DNI ya está registrado.',
+        ]);
+
+        $estudiante->update($validatedData);
+
+        return redirect()->route('estudiantes.index')
+                         ->with('success', 'Estudiante actualizado correctamente.');
     }
 
     // ❌ Eliminar estudiante

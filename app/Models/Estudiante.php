@@ -9,13 +9,16 @@ class Estudiante extends Model
 {
     use HasFactory;
 
-    // 👇 Nombre explícito de la tabla
+    // 📘 Nombre explícito de la tabla en la base de datos
     protected $table = 'estudiantes';
 
-    // Campos que se pueden llenar masivamente
+    // 🧾 Campos que se pueden asignar de forma masiva
     protected $fillable = [
-        'nombre',
-        'apellido',
-        'dni',
+        'codigo',            // Código del estudiante
+        'nombre',            // Nombre
+        'apellido',          // Primer apellido
+        'segundo_apellido',  // Segundo apellido
+        'direccion',         // Dirección
+        'dni',               // Documento Nacional de Identidad
     ];
 }

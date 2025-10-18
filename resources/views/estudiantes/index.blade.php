@@ -1,305 +1,264 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker System | Estudiantes</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SENATI | Sistema de Gestión Estudiantil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --senati-blue: #003366;
+      --senati-dark: #001f3f;
+      --senati-light: #f1f5f9;
+      --senati-gray: #b0bec5;
+      --senati-bg: #002244;
+      --accent-blue: #0074cc;
+    }
 
-    <!-- Fuente futurista -->
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --green: #00ff9f;
-            --blue: #00e0ff;
-            --pink: #ff00c8;
-            --black: #000814;
-            --glow-green: 0 0 10px #00ff9f, 0 0 20px #00ff9f, 0 0 40px #00ff9f;
-        }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Share Tech Mono', monospace;
-            letter-spacing: 1px;
-        }
+body {
+  background: linear-gradient(135deg, var(--senati-dark) 0%, var(--senati-blue) 60%, var(--senati-bg) 100%);
+  font-family: 'Roboto', sans-serif;
+  color: var(--senati-light);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
 
-        body {
-            background: radial-gradient(circle at 30% 30%, #001220, #000814 90%);
-            color: var(--green);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            position: relative;
-        }
+.pattern-bg {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  opacity: 0.05;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 35px,
+    rgba(255, 255, 255, 0.08) 35px,
+    rgba(255, 255, 255, 0.08) 36px
+  );
+  z-index: 1;
+}
 
-        /* Fondo Matrix animado */
-        canvas#matrix {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            background: transparent;
-        }
+.container { position: relative; z-index: 2; max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
 
-        /* Contenedor principal */
-        .container {
-            position: relative;
-            z-index: 2;
-            width: 90%;
-            max-width: 900px;
-            background: rgba(0, 15, 30, 0.7);
-            border: 1px solid rgba(0, 255, 128, 0.3);
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(0, 255, 128, 0.4);
-            backdrop-filter: blur(12px);
-            animation: appear 1s ease-in-out;
-        }
+/* ENCABEZADO */
+.header-main {
+  background: linear-gradient(135deg, var(--senati-blue), var(--senati-dark));
+  border-radius: 25px;
+  padding: 40px 50px;
+  margin-bottom: 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  border: 3px solid var(--accent-blue);
+  position: relative;
+}
 
-        @keyframes appear {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
+.logo-section { display: flex; align-items: center; gap: 25px; margin-bottom: 15px; }
 
-        /* Encabezado */
-        header {
-            padding: 25px;
-            text-align: center;
-            border-bottom: 1px solid rgba(0, 255, 128, 0.3);
-        }
+.logo-emblem {
+  width: 90px; height: 90px;
+  background: linear-gradient(135deg, var(--accent-blue), var(--senati-gray));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.5rem; font-weight: 900;
+  box-shadow: 0 0 40px rgba(0, 116, 204, 0.6);
+  border: 4px solid rgba(255, 255, 255, 0.15);
+  animation: rotateLogo 18s linear infinite;
+}
 
-        header h1 {
-            font-size: 2.5rem;
-            color: var(--green);
-            text-shadow: var(--glow-green);
-            animation: glitch 3s infinite linear alternate-reverse;
-        }
+@keyframes rotateLogo { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        @keyframes glitch {
-            0% { text-shadow: 2px 0 var(--blue), -2px 0 var(--pink); }
-            20% { text-shadow: -2px 0 var(--blue), 2px 0 var(--pink); }
-            40% { text-shadow: 3px 0 var(--blue), -3px 0 var(--pink); }
-            60% { text-shadow: -3px 0 var(--blue), 3px 0 var(--pink); }
-            80% { text-shadow: 2px 0 var(--pink), -2px 0 var(--blue); }
-            100% { text-shadow: -2px 0 var(--pink), 2px 0 var(--blue); }
-        }
+.logo-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3.5rem; font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 3px;
+  text-shadow: 2px 2px 0 var(--accent-blue), 5px 5px 20px rgba(0, 116, 204, 0.4);
+}
 
-        header .header-subtitle {
-            font-size: 1rem;
-            color: var(--blue);
-            margin-top: 10px;
-            text-shadow: 0 0 10px var(--blue);
-            animation: fadein 3s infinite alternate;
-        }
+.institution-name {
+  font-size: 1.1rem; color: var(--senati-gray); font-weight: 300;
+  letter-spacing: 2px; margin-left: 115px;
+}
 
-        @keyframes fadein {
-            from { opacity: 0.7; }
-            to { opacity: 1; }
-        }
+.tagline { font-size: 1rem; color: var(--accent-blue); font-weight: 500; margin-left: 115px; margin-top: 5px; }
 
-        /* Contenido */
-        .content {
-            padding: 30px 40px;
-            position: relative;
-        }
+/* BARRA DE CONTROL */
+.control-bar {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 30px 40px;
+  margin-bottom: 50px;
+  display: flex; justify-content: space-between; align-items: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  border-left: 6px solid var(--accent-blue);
+}
 
-        .alert {
-            background: rgba(0, 255, 128, 0.1);
-            border-left: 4px solid var(--green);
-            padding: 10px 20px;
-            border-radius: 10px;
-            color: var(--green);
-            margin-bottom: 20px;
-            animation: glow 1.5s infinite alternate;
-        }
+.btn-new-student {
+  padding: 16px 40px;
+  background: linear-gradient(135deg, var(--accent-blue), #3399ff);
+  color: #fff; border: none; border-radius: 15px;
+  font-size: 1.1rem; font-weight: 700;
+  cursor: pointer; text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 8px 25px rgba(0, 116, 204, 0.4);
+  transition: all 0.3s ease;
+}
 
-        @keyframes glow {
-            from { box-shadow: 0 0 5px var(--green); }
-            to { box-shadow: 0 0 20px var(--green); }
-        }
+.btn-new-student:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(0, 116, 204, 0.6); }
 
-        /* Botón neon */
-        .btn-primary {
-            display: inline-block;
-            padding: 12px 25px;
-            border-radius: 8px;
-            background: linear-gradient(90deg, var(--green), var(--blue));
-            color: #000;
-            text-decoration: none;
-            font-weight: bold;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px var(--green);
-        }
+/* TARJETAS DE ESTUDIANTES */
+.students-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+  gap: 30px;
+  list-style: none;
+}
 
-        .btn-primary:hover {
-            background: linear-gradient(90deg, var(--blue), var(--pink));
-            box-shadow: 0 0 25px var(--blue);
-            transform: scale(1.08);
-            color: #fff;
-        }
+.student-card {
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  border-left: 6px solid var(--accent-blue);
+  transition: all 0.4s;
+}
 
-        /* Tarjeta de estudiante */
-        .student-card {
-            background: rgba(0, 255, 128, 0.07);
-            border: 1px solid rgba(0, 255, 128, 0.2);
-            border-radius: 12px;
-            padding: 20px 25px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
+.student-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(0, 116, 204, 0.25);
+}
 
-        .student-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(0, 255, 128, 0.2), transparent);
-            transition: 0.8s;
-        }
+.card-header { display: flex; align-items: center; gap: 20px; margin-bottom: 25px; }
 
-        .student-card:hover::before {
-            left: 100%;
-        }
+.student-avatar {
+  width: 85px; height: 85px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--senati-blue), var(--accent-blue));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; font-weight: 800; color: #fff;
+  font-family: 'Montserrat', sans-serif;
+}
 
-        .student-card:hover {
-            transform: scale(1.03);
-            box-shadow: 0 0 20px rgba(0, 255, 128, 0.3);
-        }
+.student-info h3 { font-size: 1.5rem; color: var(--senati-blue); font-weight: 700; }
+.student-code { color: var(--accent-blue); font-weight: 600; }
 
-        .student-name {
-            font-size: 1.3rem;
-            color: var(--green);
-            text-shadow: 0 0 10px var(--green);
-        }
+.actions-footer { display: flex; gap: 10px; margin-top: 20px; }
 
-        .student-details {
-            color: var(--blue);
-            font-size: 0.9rem;
-            margin-top: 5px;
-        }
+.btn-edit, .btn-delete {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
 
-        .btn-danger {
-            background: linear-gradient(90deg, #ff004c, #ff00c8);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            font-weight: bold;
-        }
+.btn-edit {
+  background: transparent;
+  border: 2px solid var(--accent-blue);
+  color: var(--accent-blue);
+}
 
-        .btn-danger:hover {
-            box-shadow: 0 0 20px var(--pink);
-            transform: scale(1.1);
-        }
+.btn-edit:hover {
+  background: var(--accent-blue);
+  color: #fff;
+  transform: translateY(-2px);
+}
 
-        /* Estado vacío */
-        .empty-state {
-            text-align: center;
-            color: #ccc;
-            padding: 40px 0;
-            font-size: 1.1rem;
-        }
+.btn-delete {
+  background: transparent;
+  border: 2px solid #b91c1c;
+  color: #b91c1c;
+}
 
-        .empty-state-icon {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            color: var(--blue);
-            text-shadow: 0 0 10px var(--blue);
-        }
-    </style>
+.btn-delete:hover {
+  background: #b91c1c;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.footer {
+  text-align: center;
+  padding: 40px 20px;
+  margin-top: 60px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+
+  </style>
 </head>
-
 <body>
-    <!-- Fondo matrix -->
-    <canvas id="matrix"></canvas>
+  <div class="pattern-bg"></div>
 
-    <div class="container">
-        <header>
-            <h1>HACKER SYSTEM v4.0</h1>
-            <p class="header-subtitle">[ Gestión avanzada de estudiantes en red ⚡ ]</p>
-        </header>
+  <div class="container">
+    <header class="header-main">
+      <div class="logo-section">
+        <div class="logo-emblem">⚙</div>
+        <h1 class="logo-text">SENATI</h1>
+      </div>
+      <p class="institution-name">SERVICIO NACIONAL DE ADIESTRAMIENTO EN TRABAJO INDUSTRIAL</p>
+      <p class="tagline">Sistema de Gestión Estudiantil | Excelencia y Tecnología para el Futuro</p>
+    </header>
 
-        <div class="content">
-            @if (session('success'))
-                <div class="alert">{{ session('success') }}</div>
-            @endif
-
-            <a href="{{ route('estudiantes.create') }}" class="btn-primary">+ Nuevo Registro</a>
-
-            @if ($estudiantes->isEmpty())
-                <div class="empty-state">
-                    <div class="empty-state-icon">🛰️</div>
-                    <p>No hay estudiantes registrados en la base de datos.</p>
-                </div>
-            @else
-                <ul class="student-list">
-                    @foreach ($estudiantes as $estudiante)
-                        <li class="student-card">
-                            <div class="student-info">
-                                <div class="student-name">{{ $estudiante->nombre }} {{ $estudiante->apellido }}</div>
-                                <div class="student-details">DNI: {{ $estudiante->dni }}</div>
-                            </div>
-                            <form action="{{ route('estudiantes.destroy', $estudiante->id) }}" method="POST" onsubmit="return confirm('¿Eliminar registro permanentemente?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-danger">Eliminar</button>
-                            </form>
-                        </li>
-                    @endforeach
-                </ul>
-            @endif
-        </div>
+<div class="control-bar">
+  <a href="{{ route('estudiantes.create') }}" class="btn-new-student">➕ Nuevo Estudiante</a>
+  <div class="stats-panel">
+    <div class="stat-card">
+      <div class="stat-number">{{ $estudiantes->count() }}</div>
+      <div class="stat-label">Estudiantes Registrados</div>
     </div>
+  </div>
+</div>
 
-    <script>
-        // 🎥 Fondo Matrix dinámico
-        const canvas = document.getElementById("matrix");
-        const ctx = canvas.getContext("2d");
+@if ($estudiantes->isEmpty())
+  <div class="empty-state" style="text-align:center; padding:60px;">
+    <div class="empty-icon" style="font-size:3rem;">🎓</div>
+    <p class="empty-text" style="font-size:1.3rem; font-weight:600; margin-top:10px;">No hay estudiantes registrados</p>
+    <p class="empty-subtext" style="color: var(--senati-gray); margin-top:5px;">Comienza agregando el primer estudiante al sistema</p>
+  </div>
+@else
+  <ul class="students-grid">
+    @foreach ($estudiantes as $estudiante)
+    <li class="student-card">
+      <div class="card-header">
+        <div class="student-avatar">{{ strtoupper(substr($estudiante->nombre, 0, 1)) }}</div>
+        <div class="student-info">
+          <h3>{{ $estudiante->nombre }} {{ $estudiante->apellido }}</h3>
+          <div class="student-code">Código: {{ $estudiante->codigo ?? '—' }}</div>
+          <div class="student-code">DNI: {{ $estudiante->dni }}</div>
+        </div>
+      </div>
 
-        canvas.height = window.innerHeight;
-        canvas.width = window.innerWidth;
+      <div class="details-grid">
+        <div class="detail-item">
+          <div class="detail-label">Dirección</div>
+          <div class="detail-value">{{ $estudiante->direccion ?? 'No registrada' }}</div>
+        </div>
+      </div>
 
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%";
-        const fontSize = 14;
-        const columns = canvas.width / fontSize;
-        const drops = [];
+      <div class="actions-footer">
+        <a href="{{ route('estudiantes.edit', $estudiante->id) }}" class="btn-edit">✏️ Editar</a>
+        <form action="{{ route('estudiantes.destroy', $estudiante->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar este estudiante?')">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="btn-delete">🗑️ Eliminar</button>
+        </form>
+      </div>
+    </li>
+    @endforeach
+  </ul>
+@endif
 
-        for (let x = 0; x < columns; x++) drops[x] = 1;
+<footer class="footer">
+  <p>© 2025 SENATI - Sistema de Gestión Estudiantil | Desarrollado con pasión por la tecnología</p>
+</footer>
 
-        function draw() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#00ff9f";
-            ctx.font = fontSize + "px monospace";
 
-            for (let i = 0; i < drops.length; i++) {
-                const text = letters.charAt(Math.floor(Math.random() * letters.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            }
-        }
-
-        setInterval(draw, 35);
-    </script>
+  </div>
 </body>
 </html>
