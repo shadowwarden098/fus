@@ -82,7 +82,16 @@ class EstudiantesController extends Controller
                          ->with('success', 'Estudiante actualizado correctamente.');
     }
 
-    // ❌ Eliminar estudiante
+    // ⚠️ Confirmar eliminación
+    // ⚠️ Confirmar eliminación
+public function confirmarEliminacion($id)
+{
+    $estudiante = Estudiante::findOrFail($id);
+    return view('estudiantes.delete', compact('estudiante')); // <-- aquí cambias el nombre
+}
+
+
+    // ❌ Eliminar estudiante definitivamente
     public function destroy($id)
     {
         $estudiante = Estudiante::findOrFail($id);

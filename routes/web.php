@@ -42,11 +42,14 @@ Route::get('/estudiantes/index', [EstudiantesController::class, 'index'])->name(
 Route::get('/estudiantes/create', [EstudiantesController::class, 'create'])->name('estudiantes.create');
 Route::post('/estudiantes', [EstudiantesController::class, 'store'])->name('estudiantes.store');
 
-// 🔹 NUEVAS rutas para editar y actualizar estudiantes
+// 🔹 NUEVAS rutas para editar, actualizar y eliminar estudiantes
 Route::get('/estudiantes/{id}/edit', [EstudiantesController::class, 'edit'])->name('estudiantes.edit');
+Route::get('/estudiantes/{id}/confirmar-eliminacion', [EstudiantesController::class, 'confirmarEliminacion'])->name('estudiantes.confirmarEliminacion');
 Route::put('/estudiantes/{id}', [EstudiantesController::class, 'update'])->name('estudiantes.update');
-
 Route::delete('/estudiantes/{id}', [EstudiantesController::class, 'destroy'])->name('estudiantes.destroy');
+
+// ⚠️ NUEVA ruta para mostrar confirmación antes de eliminar
+Route::get('/estudiantes/{id}/delete', [EstudiantesController::class, 'delete'])->name('estudiantes.delete');
 
 
 // 🛐 RUTAS DE DIOSES
