@@ -1,68 +1,79 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\view;
-use App\Models\Estudiante;
-use App\Models\Dios;
-use App\Models\jugador;
-
 use App\Http\Controllers\Estudiantes\EstudiantesController;
 use App\Http\Controllers\Dioses\DiosesController;
 use App\Http\Controllers\Jugadores\JugadoresController;
+use App\Http\Controllers\Cuenta\CuentasController;
+use App\Http\Controllers\Usuario\UsuariosController;
+use App\Http\Controllers\Admin\AdminController;
 
+// 🌍 Página principal
+Route::get('/', fn() => view('welcome'))->name('home');
 
-Route::get('/', function () {
-/*
-$estudiante = new Estudiante();
-$estudiante->nombres = 'gabriel';
-$estudiante->pri_ape = 'pozo';
-$estudiante->seg_ape = 'espinoza';
-$estudiante->save();
+// 🗣️ Mensajes
+Route::get('/hola', fn() => '"No importa cuánto sufras, nunca cambies quién eres."')->name('senin');
+Route::get('/bienvenidos', fn() => view('bienvenidos'))->name('bienvenidos');
+Route::get('/clan', fn() => view('clan'))->name('clan');
 
-return $estudiante;
-*/
-    return view('welcome');
+// 🧑‍🎓 Estudiantes
+Route::prefix('estudiantes')->name('estudiantes.')->group(function() {
+    Route::get('/', [EstudiantesController::class, 'index'])->name('index');
+    Route::get('/create', [EstudiantesController::class, 'create'])->name('create');
+    Route::post('/', [EstudiantesController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [EstudiantesController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [EstudiantesController::class, 'update'])->name('update');
+    Route::get('/{id}/confirmar-eliminacion', [EstudiantesController::class, 'confirmarEliminacion'])->name('confirmarEliminacion');
+    Route::delete('/{id}', [EstudiantesController::class, 'destroy'])->name('destroy');
+    Route::get('/{id}/delete', [EstudiantesController::class, 'delete'])->name('delete');
 });
 
-Route::get('/hola', function () {
-    return '"No importa cuánto sufras, nunca cambies quién eres."';
-})->name('senin');
+// 🛐 Dioses
+Route::prefix('dioses')->name('dioses.')->group(function() {
+    Route::get('/', [DiosesController::class, 'index'])->name('index');
+    Route::get('/create', [DiosesController::class, 'create'])->name('create');
+    Route::post('/', [DiosesController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [DiosesController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [DiosesController::class, 'update'])->name('update');
+    Route::delete('/{id}', [DiosesController::class, 'destroy'])->name('destroy');
+});
 
-Route::get('/bienvenidos', function () {
-    return view('bienvenidos');
-})->name('bienvenidos');
+// 🎮 Jugadores
+Route::prefix('jugadores')->name('jugadores.')->group(function() {
+    Route::get('/', [JugadoresController::class, 'index'])->name('index');
+    Route::get('/create', [JugadoresController::class, 'create'])->name('create');
+    Route::post('/', [JugadoresController::class, 'store'])->name('store');
+    Route::delete('/{id}', [JugadoresController::class, 'destroy'])->name('destroy');
+});
 
-Route::get('/clan', function () {
-    return view('clan');
-})->name('clan');
+// 💳 Cuentas (Administrador)
+Route::prefix('cuentas')->name('cuentas.')->middleware('auth:admin')->group(function() {
+    Route::get('/', [CuentasController::class, 'index'])->name('index');
+    Route::get('/create', [CuentasController::class, 'create'])->name('create');
+    Route::post('/', [CuentasController::class, 'store'])->name('store');
+    Route::get('/{cuenta}', [CuentasController::class, 'show'])->name('show');
+    Route::get('/{cuenta}/edit', [CuentasController::class, 'edit'])->name('edit');
+    Route::put('/{cuenta}', [CuentasController::class, 'update'])->name('update');
+    Route::delete('/{cuenta}', [CuentasController::class, 'destroy'])->name('destroy');
 
+    // Activar / Desactivar AJAX
+    Route::post('/{cuenta}/activar', [CuentasController::class, 'activarCuenta'])->name('activar');
+    Route::post('/{cuenta}/desactivar', [CuentasController::class, 'desactivarCuenta'])->name('desactivar');
 
-// 🧑‍🎓 RUTAS DE ESTUDIANTES
-Route::get('/estudiantes/index', [EstudiantesController::class, 'index'])->name('estudiantes.index');
-Route::get('/estudiantes/create', [EstudiantesController::class, 'create'])->name('estudiantes.create');
-Route::post('/estudiantes', [EstudiantesController::class, 'store'])->name('estudiantes.store');
+    Route::get('/buscar', [CuentasController::class, 'buscar'])->name('buscar');
+    Route::get('/estadisticas', [CuentasController::class, 'estadisticas'])->name('estadisticas');
 
-// 🔹 NUEVAS rutas para editar, actualizar y eliminar estudiantes
-Route::get('/estudiantes/{id}/edit', [EstudiantesController::class, 'edit'])->name('estudiantes.edit');
-Route::get('/estudiantes/{id}/confirmar-eliminacion', [EstudiantesController::class, 'confirmarEliminacion'])->name('estudiantes.confirmarEliminacion');
-Route::put('/estudiantes/{id}', [EstudiantesController::class, 'update'])->name('estudiantes.update');
-Route::delete('/estudiantes/{id}', [EstudiantesController::class, 'destroy'])->name('estudiantes.destroy');
+    // 🔹 Usuarios de una cuenta
+    Route::get('/{cuenta}/usuarios', [UsuariosController::class, 'indexPorCuenta'])->name('usuarios.porCuenta');
+});
 
-// ⚠️ NUEVA ruta para mostrar confirmación antes de eliminar
-Route::get('/estudiantes/{id}/delete', [EstudiantesController::class, 'delete'])->name('estudiantes.delete');
+// 👤 Usuarios (Solo crear jugador)
+Route::prefix('usuarios')->name('usuarios.')->group(function() {
+    Route::get('/create', [UsuariosController::class, 'create'])->name('create');
+    Route::post('/', [UsuariosController::class, 'store'])->name('store');
+});
 
-
-// 🛐 RUTAS DE DIOSES
-Route::get('/dioses/index', [DiosesController::class, 'index'])->name('dioses.index');
-Route::get('/dioses/create', [DiosesController::class, 'create'])->name('dioses.create');
-Route::post('/dioses', [DiosesController::class, 'store'])->name('dioses.store');
-Route::get('/dioses/{id}/edit', [DiosesController::class, 'edit'])->name('dioses.edit');
-Route::put('/dioses/{id}', [DiosesController::class, 'update'])->name('dioses.update');
-Route::delete('/dioses/{id}', [DiosesController::class, 'destroy'])->name('dioses.destroy');
-
-
-// 🎮 RUTAS DE JUGADORES
-Route::get('/jugadores', [JugadoresController::class, 'index'])->name('jugadores.index');
-Route::get('/jugadores/create', [JugadoresController::class, 'create'])->name('jugadores.create');
-Route::post('/jugadores', [JugadoresController::class, 'store'])->name('jugadores.store');
-Route::delete('/jugadores/{id}', [JugadoresController::class, 'destroy'])->name('jugadores.destroy');
+// 🔑 Login y logout Administrador
+Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.post');
+Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
