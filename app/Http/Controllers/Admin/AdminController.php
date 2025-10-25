@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -13,7 +14,7 @@ class AdminController extends Controller
      */
     public function showLoginForm()
     {
-        return view('admin.login'); // Crea esta vista en resources/views/admin/login.blade.php
+        return view('admin.login');
     }
 
     /**
@@ -33,9 +34,21 @@ class AdminController extends Controller
             return redirect()->intended(route('cuentas.index'));
         }
 
-        return back()->withErrors([
-            'email' => 'Las credenciales no coinciden con un administrador.',
-        ])->onlyInput('email');
+        // 🚨 REGISTRAR INTENTO FALLIDO (para el drama)
+        Log::warning('Intento de acceso no autorizado al panel de administrador', [
+            'email' => $request->email,
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'timestamp' => now(),
+        ]);
+
+        // Regresar con el sermón completo
+        return back()
+            ->withErrors([
+                'email' => 'Las credenciales no coinciden con un administrador autorizado.',
+            ])
+            ->onlyInput('email')
+            ->with('error', 'Intento de acceso no autorizado detectado y registrado');
     }
 
     /**
@@ -48,6 +61,7 @@ class AdminController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('admin.login');
+        return redirect()->route('admin.login')
+            ->with('success', 'Sesión cerrada correctamente');
     }
 }

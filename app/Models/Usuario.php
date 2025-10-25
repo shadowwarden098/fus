@@ -12,14 +12,16 @@ class Usuario extends Model
 
     protected $table = 'usuarios';
     protected $primaryKey = 'id';
-    public $timestamps = false;
+    public $timestamps = true; // ← AGREGAR ESTA LÍNEA
 
     protected $fillable = ['nombre', 'email', 'password', 'rol'];
 
-    // 🔁 Relación: Un usuario puede tener varias cuentas
-    public function cuentas()
+    protected $hidden = ['password'];
+
+    // 🔁 Relación uno a uno: Un usuario tiene UNA cuenta
+    public function cuenta()
     {
-        return $this->hasMany(Cuenta::class, 'usuario_id');
+        return $this->hasOne(Cuenta::class, 'usuario_id', 'id');
     }
 
     // 🔒 Mutador para encriptar la contraseña automáticamente

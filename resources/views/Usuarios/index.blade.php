@@ -8,9 +8,14 @@
         <h2 class="fw-bold text-primary">
             <i class="fas fa-users"></i> Lista de Usuarios
         </h2>
-        <a href="{{ route('usuarios.create') }}" class="btn btn-success">
-            <i class="fas fa-user-plus"></i> Nuevo Usuario
-        </a>
+        <div>
+            <a href="{{ route('cuentas.index') }}" class="btn btn-outline-info me-2">
+                <i class="fas fa-building"></i> Ver Cuentas
+            </a>
+            <a href="{{ route('usuarios.create') }}" class="btn btn-success">
+                <i class="fas fa-user-plus"></i> Nuevo Usuario
+            </a>
+        </div>
     </div>
 
     <!-- Mensajes de éxito o error -->
@@ -33,6 +38,9 @@
                 <div class="text-center text-muted py-5">
                     <i class="fas fa-user-slash fa-3x mb-3"></i>
                     <p class="fs-5">No hay usuarios registrados.</p>
+                    <a href="{{ route('usuarios.create') }}" class="btn btn-primary mt-3">
+                        <i class="fas fa-plus"></i> Crear primer usuario
+                    </a>
                 </div>
             @else
                 <div class="table-responsive">
@@ -51,30 +59,58 @@
                             @foreach($usuarios as $usuario)
                                 <tr>
                                     <td>{{ $usuario->id }}</td>
-                                    <td>{{ $usuario->nombre }}</td>
+                                    <td>
+                                        <strong>{{ $usuario->nombre }}</strong>
+                                    </td>
                                     <td>{{ $usuario->email }}</td>
                                     <td>
-                                        <span class="badge bg-info text-dark">
-                                            {{ ucfirst($usuario->rol ?? 'Jugador') }}
-                                        </span>
+                                        @if($usuario->rol == 'admin')
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-shield-alt"></i> Admin
+                                            </span>
+                                        @elseif($usuario->rol == 'usuario')
+                                            <span class="badge bg-primary">
+                                                <i class="fas fa-user"></i> Usuario
+                                            </span>
+                                        @else
+                                            <span class="badge bg-info">
+                                                <i class="fas fa-gamepad"></i> Jugador
+                                            </span>
+                                        @endif
                                     </td>
-                                    <td>{{ $usuario->created_at ? $usuario->created_at->format('d/m/Y') : '-' }}</td>
+                                    <td>{{ $usuario->created_at ? $usuario->created_at->format('d/m/Y H:i') : '-' }}</td>
                                     <td>
-                                        <a href="{{ route('usuarios.show', $usuario->id) }}" class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                        <a href="{{ route('usuarios.edit', $usuario->id) }}" class="btn btn-sm btn-warning">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <form action="{{ route('usuarios.destroy', $usuario->id) }}" 
-                                              method="POST" 
-                                              class="d-inline"
-                                              onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-danger">
+                                        <div class="btn-group" role="group">
+                                            <!-- Ver -->
+                                            <a href="{{ route('usuarios.show', $usuario->id) }}" 
+                                               class="btn btn-sm btn-info" 
+                                               title="Ver detalles">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+
+                                            <!-- Editar -->
+                                            <a href="{{ route('usuarios.edit', $usuario->id) }}" 
+                                               class="btn btn-sm btn-warning" 
+                                               title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+
+                                            <!-- Eliminar -->
+                                            <button type="button" 
+                                                    class="btn btn-sm btn-danger" 
+                                                    title="Eliminar"
+                                                    onclick="confirmarEliminacion({{ $usuario->id }}, '{{ $usuario->nombre }}')">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
+                                        </div>
+
+                                        <!-- Formulario oculto para eliminar -->
+                                        <form id="form-delete-{{ $usuario->id }}" 
+                                              action="{{ route('usuarios.destroy', $usuario->id) }}" 
+                                              method="POST" 
+                                              style="display: none;">
+                                            @csrf
+                                            @method('DELETE')
                                         </form>
                                     </td>
                                 </tr>
@@ -91,4 +127,14 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    function confirmarEliminacion(id, nombre) {
+        if (confirm(`¿Estás seguro de eliminar al usuario "${nombre}"?\n\nEsta acción no se puede deshacer.`)) {
+            document.getElementById('form-delete-' + id).submit();
+        }
+    }
+</script>
+@endpush
 @endsection

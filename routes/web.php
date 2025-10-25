@@ -7,10 +7,10 @@ use App\Http\Controllers\Jugadores\JugadoresController;
 use App\Http\Controllers\Cuenta\CuentasController;
 use App\Http\Controllers\Usuario\UsuariosController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\ComentariosController; // Asegúrate de importar el controlador
 
 // 🌍 Página principal
 Route::get('/', fn() => view('welcome'))->name('home');
-
 // 🗣️ Mensajes
 Route::get('/hola', fn() => '"No importa cuánto sufras, nunca cambies quién eres."')->name('senin');
 Route::get('/bienvenidos', fn() => view('bienvenidos'))->name('bienvenidos');
@@ -55,25 +55,40 @@ Route::prefix('cuentas')->name('cuentas.')->middleware('auth:admin')->group(func
     Route::get('/{cuenta}/edit', [CuentasController::class, 'edit'])->name('edit');
     Route::put('/{cuenta}', [CuentasController::class, 'update'])->name('update');
     Route::delete('/{cuenta}', [CuentasController::class, 'destroy'])->name('destroy');
-
     // Activar / Desactivar AJAX
     Route::post('/{cuenta}/activar', [CuentasController::class, 'activarCuenta'])->name('activar');
     Route::post('/{cuenta}/desactivar', [CuentasController::class, 'desactivarCuenta'])->name('desactivar');
-
     Route::get('/buscar', [CuentasController::class, 'buscar'])->name('buscar');
     Route::get('/estadisticas', [CuentasController::class, 'estadisticas'])->name('estadisticas');
-
     // 🔹 Usuarios de una cuenta
     Route::get('/{cuenta}/usuarios', [UsuariosController::class, 'indexPorCuenta'])->name('usuarios.porCuenta');
 });
 
-// 👤 Usuarios (Solo crear jugador)
+// 👤 Usuarios (CRUD Completo)
 Route::prefix('usuarios')->name('usuarios.')->group(function() {
+    Route::get('/', [UsuariosController::class, 'index'])->name('index');
     Route::get('/create', [UsuariosController::class, 'create'])->name('create');
     Route::post('/', [UsuariosController::class, 'store'])->name('store');
+    Route::get('/{id}', [UsuariosController::class, 'show'])->name('show');
+    Route::get('/{id}/edit', [UsuariosController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [UsuariosController::class, 'update'])->name('update');
+    Route::delete('/{id}', [UsuariosController::class, 'destroy'])->name('destroy');
 });
 
 // 🔑 Login y logout Administrador
 Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.post');
 Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+
+// 💬 Comentarios
+Route::prefix('comentarios')->name('comentarios.')->group(function() {
+    Route::get('/', [ComentariosController::class, 'index'])->name('index');
+    Route::get('/create', [ComentariosController::class, 'create'])->name('create');
+    Route::post('/', [ComentariosController::class, 'store'])->name('store');
+    Route::get('/{comentario}/responder', [ComentariosController::class, 'responder'])->name('responder');
+    Route::post('/{comentario}/responder', [ComentariosController::class, 'store'])->name('guardar-respuesta');
+    Route::get('/{comentario}', [ComentariosController::class, 'show'])->name('show');
+    Route::get('/{comentario}/edit', [ComentariosController::class, 'edit'])->name('edit');
+    Route::put('/{comentario}', [ComentariosController::class, 'update'])->name('update');
+    Route::delete('/{comentario}', [ComentariosController::class, 'destroy'])->name('destroy');
+});

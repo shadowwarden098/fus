@@ -8,31 +8,28 @@ use Illuminate\Support\Carbon;
 
 class Cuenta extends Model
 {
-    use HasFactory;
+    use HasFactory; // ⚠️ QUITAR SoftDeletes
 
-    protected $table = 'cuentas';          // Nombre de la tabla
-    protected $primaryKey = 'idCuenta';    // Nombre de la columna PK
-    public $timestamps = false;            // Desactivo timestamps porque usas 'fechaCreacion'
+    protected $table = 'cuentas';
+    protected $primaryKey = 'idCuenta';
 
-    // ✅ Campos editables
     protected $fillable = [
         'estado',
         'usuario_id',
-        'fechaCreacion', // agregar para poder asignarla al crear
     ];
 
-    // 🔁 Relaciones
+    // 🔁 Relación uno a uno: Una cuenta pertenece a UN usuario
     public function usuario()
     {
-        return $this->belongsTo(Usuario::class);
+        return $this->belongsTo(Usuario::class, 'usuario_id', 'id');
     }
 
     public function progresos()
     {
-        return $this->hasMany(Progreso::class);
+        return $this->hasMany(Progreso::class, 'idCuenta', 'idCuenta');
     }
 
-    // 🔹 Métodos personalizados
+    // Métodos personalizados
     public function activarCuenta()
     {
         $this->estado = 'activa';
@@ -55,7 +52,6 @@ class Cuenta extends Model
         return $this->estado === 'inactiva';
     }
 
-    // 🔹 Scopes para filtrar cuentas por estado
     public function scopeActivas($query)
     {
         return $query->where('estado', 'activa');
@@ -66,15 +62,7 @@ class Cuenta extends Model
         return $query->where('estado', 'inactiva');
     }
 
-    // 🔹 Casts para fechas
     protected $casts = [
-        'fechaCreacion' => 'datetime', // Esto asegura que puedas usar ->format() sin error
+        'fechaCreacion' => 'datetime',
     ];
-
-    // 🔹 Accesor para mostrar fecha de creación legible
-    public function getFechaCreacionLegibleAttribute()
-    {
-        // Usar Carbon por si acaso
-        return $this->fechaCreacion ? Carbon::parse($this->fechaCreacion)->format('d/m/Y H:i') : '';
-    }
 }

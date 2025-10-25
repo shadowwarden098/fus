@@ -5,30 +5,27 @@ namespace App\Http\Controllers\Usuario;
 use App\Http\Controllers\Controller;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UsuariosController extends Controller
 {
-    // 📋 Mostrar todos los usuarios
     public function index()
     {
-        $usuarios = Usuario::orderBy('nombre')->paginate(10); // Paginación y orden alfabético
+        $usuarios = Usuario::orderBy('nombre')->paginate(10);
         return view('usuarios.index', compact('usuarios'));
     }
 
-    // 🔹 Mostrar usuarios de una cuenta específica
     public function indexPorCuenta($cuentaId)
     {
         $usuarios = Usuario::where('idCuenta', $cuentaId)->orderBy('nombre')->paginate(10);
         return view('usuarios.index', compact('usuarios', 'cuentaId'));
     }
 
-    // ➕ Formulario para crear usuario
     public function create()
     {
         return view('usuarios.create');
     }
 
-    // 💾 Guardar nuevo usuario
     public function store(Request $request)
     {
         $request->validate([
@@ -36,55 +33,83 @@ class UsuariosController extends Controller
             'email' => 'required|email|unique:usuarios,email',
             'password' => 'required|string|min:6',
             'rol' => 'required|string|in:admin,jugador',
-            'idCuenta' => 'nullable|integer|exists:cuentas,idCuenta', // opcional para asignar a una cuenta
         ]);
 
-        Usuario::create($request->only('nombre', 'email', 'rol', 'idCuenta') + [
-            'password' => $request->password, // El mutador del modelo se encargará del hash
+        Usuario::create([
+            'nombre' => $request->nombre,
+            'email' => $request->email,
+            'password' => $request->password,
+            'rol' => $request->rol,
         ]);
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario creado exitosamente.');
+        return redirect()->route('usuarios.index')
+            ->with('success', 'Usuario creado exitosamente.');
     }
 
-    // 👀 Mostrar un usuario específico
-    public function show(Usuario $usuario)
+    public function show($id)
     {
+        $usuario = Usuario::findOrFail($id);
         return view('usuarios.show', compact('usuario'));
     }
 
-    // ✏️ Formulario de edición
-    public function edit(Usuario $usuario)
+    public function edit($id)
     {
+        $usuario = Usuario::findOrFail($id);
         return view('usuarios.edit', compact('usuario'));
     }
 
-    // 🔄 Actualizar usuario
-    public function update(Request $request, Usuario $usuario)
+    public function update(Request $request, $id)
     {
+        $usuario = Usuario::findOrFail($id);
+
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'email' => 'required|email|unique:usuarios,email,' . $usuario->id,
+            'email' => 'required|email|unique:usuarios,email,' . $id,
             'rol' => 'required|string|in:admin,jugador',
             'password' => 'nullable|string|min:6',
-            'idCuenta' => 'nullable|integer|exists:cuentas,idCuenta',
         ]);
 
-        $usuario->fill($request->only('nombre', 'email', 'rol', 'idCuenta'));
+        $data = [
+            'nombre' => $request->nombre,
+            'email' => $request->email,
+            'rol' => $request->rol,
+        ];
 
         if ($request->filled('password')) {
-            $usuario->password = $request->password; // Mutador en el modelo aplica hash
+            $data['password'] = $request->password;
         }
 
-        $usuario->save();
+        $usuario->update($data);
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado correctamente.');
+        return redirect()->route('usuarios.index')
+            ->with('success', 'Usuario actualizado correctamente.');
     }
 
-    // 🗑️ Eliminar usuario
-    public function destroy(Usuario $usuario)
+    public function destroy($id)
     {
-        $usuario->delete();
+        try {
+            DB::beginTransaction();
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado correctamente.');
+            $usuario = Usuario::findOrFail($id);
+
+            // Si tiene cuenta asociada, eliminarla primero
+            if ($usuario->cuenta) {
+                $usuario->cuenta->delete();
+            }
+
+            // Eliminar el usuario
+            $usuario->delete();
+
+            DB::commit();
+
+            return redirect()->route('usuarios.index')
+                ->with('success', 'Usuario eliminado correctamente.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('usuarios.index')
+                ->with('error', 'Error al eliminar el usuario: ' . $e->getMessage());
+        }
     }
 }
