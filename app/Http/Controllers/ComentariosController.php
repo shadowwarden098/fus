@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Comentario;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
@@ -28,12 +26,20 @@ class ComentariosController extends Controller
             'idComentarioPadre' => 'nullable|exists:comentarios,id',
         ]);
 
-        Comentario::create([
+        $comentario = Comentario::create([
             'contenido' => $request->contenido,
             'fecha' => now(),
             'idUsuario' => $request->idUsuario,
             'idComentarioPadre' => $request->idComentarioPadre,
         ]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Comentario publicado con éxito',
+                'comentario' => $comentario
+            ]);
+        }
 
         return redirect()->route('comentarios.index')->with('success', 'Comentario creado con éxito.');
     }
@@ -54,11 +60,9 @@ class ComentariosController extends Controller
         $request->validate([
             'contenido' => 'required|string',
         ]);
-
         $comentario->update([
             'contenido' => $request->contenido,
         ]);
-
         return redirect()->route('comentarios.index')->with('success', 'Comentario actualizado con éxito.');
     }
 

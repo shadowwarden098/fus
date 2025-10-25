@@ -8,10 +8,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0b0d898c;
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at center, #00111f 0%, #000814 100%);
             color: #e0e0e0;
             min-height: 100vh;
             padding: 20px;
@@ -22,58 +24,122 @@
             margin: 0 auto;
         }
 
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00eaff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         .card {
-            background-color: #c21818ff;
-            border: 1px solid #9d2a2aff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(193, 102, 6, 0.1);
+            background: rgba(0, 10, 30, 0.7);
+            border: 1px solid rgba(0, 234, 255, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 234, 255, 0.1);
         }
 
         .card-header {
-            background-color: #230fd2ff;
-            border-bottom: 1px solid #333;
-            border-radius: 10px 10px 0 0;
+            background: linear-gradient(90deg, #0077ff, #00eaff);
+            border-radius: 15px 15px 0 0;
+            padding: 15px 20px;
+            border: none;
+        }
+
+        .card-header h5 {
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
         }
 
         .card-body {
-            background-color: #1e1e1e;
+            padding: 20px;
+            background: rgba(16, 56, 176, 0.6);
         }
 
         .comment-card {
-            background-color: #252525;
-            border: 1px solid #333;
-            border-radius: 8px;
+            background: rgba(52, 224, 115, 0.5);
+            border: 1px solid rgba(0, 234, 255, 0.3);
+            border-radius: 10px;
         }
 
         .reply-card {
-            background-color: #2d2d2d;
-            border-left: 3px solid #007bff;
+            background: rgba(15, 99, 183, 0.5);
+            border-left: 3px solid #00eaff;
             border-radius: 8px;
         }
 
         .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
+            background: linear-gradient(90deg, #0077ff, #00eaff);
+            border: none;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #00eaff, #0077ff);
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(0, 234, 255, 0.5);
         }
 
         .btn-info {
-            background-color: #17a2b8;
-            border-color: #17a2b8;
+            background: linear-gradient(90deg, #17a2b8, #00eaff);
+            border: none;
+            color: #fff;
+        }
+
+        .btn-info:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 10px rgba(0, 234, 255, 0.5);
         }
 
         .btn-warning {
-            background-color: #ffc107;
-            border-color: #ffc107;
-            color: #212529;
+            background: linear-gradient(90deg, #ffc107, #fd7e14);
+            border: none;
+            color: #000;
+        }
+
+        .btn-warning:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
         }
 
         .btn-danger {
-            background-color: #dc3545;
-            border-color: #dc3545;
+            background: linear-gradient(90deg, #dc3545, #ff6b6b);
+            border: none;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
         }
 
         .text-muted {
-            color: #888 !important;
+            color: #aaa !important;
+        }
+
+        .alert {
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: none;
+        }
+
+        .alert-success {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+            border-left: 4px solid #28a745;
+        }
+
+        .alert-info {
+            background: rgba(0, 234, 255, 0.1);
+            color: #00eaff;
+            border-left: 4px solid #00eaff;
         }
 
         .footer {
@@ -82,6 +148,15 @@
             padding: 20px;
             color: #888;
             font-size: 0.9em;
+        }
+
+        .card-title {
+            color: #00eaff;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .card-subtitle {
+            color: #aaa;
         }
     </style>
 </head>
