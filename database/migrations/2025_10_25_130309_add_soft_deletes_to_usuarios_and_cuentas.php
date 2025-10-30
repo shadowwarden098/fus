@@ -8,31 +8,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('usuarios', function (Blueprint $table) {
-            if (!Schema::hasColumn('usuarios', 'deleted_at')) {
-                $table->softDeletes();
-            }
-        });
-        
-        Schema::table('cuentas', function (Blueprint $table) {
-            if (!Schema::hasColumn('cuentas', 'deleted_at')) {
-                $table->softDeletes();
-            }
+        Schema::create('deleted_records', function (Blueprint $table) {
+            $table->id();
+            $table->string('table_name'); // Nombre de la tabla afectada (ej: 'usuarios', 'cuentas')
+            $table->unsignedBigInteger('record_id'); // ID del registro eliminado
+            $table->json('record_data'); // Datos del registro eliminado (en formato JSON)
+            $table->string('deleted_by')->nullable(); // Usuario que eliminó el registro (opcional)
+            $table->timestamp('deleted_at'); // Fecha y hora de la eliminación
+            $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::table('usuarios', function (Blueprint $table) {
-            if (Schema::hasColumn('usuarios', 'deleted_at')) {
-                $table->dropSoftDeletes();
-            }
-        });
-        
-        Schema::table('cuentas', function (Blueprint $table) {
-            if (Schema::hasColumn('cuentas', 'deleted_at')) {
-                $table->dropSoftDeletes();
-            }
-        });
+        Schema::dropIfExists('deleted_records');
     }
 };
