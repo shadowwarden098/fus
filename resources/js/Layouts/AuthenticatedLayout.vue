@@ -8,198 +8,199 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
+const showLogoutConfirm = ref(false);
+
+// ✨ Confirmar cierre de sesión
+function confirmLogout() {
+    showLogoutConfirm.value = true;
+}
+
+function cancelLogout() {
+    showLogoutConfirm.value = false;
+}
 </script>
 
 <template>
-    <div>
-        <div class="min-h-screen bg-gray-100">
-            <nav
-                class="border-b border-gray-100 bg-white"
-            >
-                <!-- Primary Navigation Menu -->
-                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div class="flex h-16 justify-between">
-                        <div class="flex">
-                            <!-- Logo -->
-                            <div class="flex shrink-0 items-center">
-                                <Link :href="route('dashboard')">
-                                    <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800"
-                                    />
-                                </Link>
-                            </div>
+    <div class="min-h-screen bg-gray-100 relative overflow-hidden">
 
-                            <!-- Navigation Links -->
-                            <div
-                                class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
-                            >
-                                <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
-                                >
-                                    Dashboard
-                                </NavLink>
+        <!-- 🌈 NAVBAR -->
+        <nav class="border-b border-gray-200 bg-white/80 backdrop-blur-md shadow-sm transition-all duration-300 z-50 relative">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex h-16 justify-between items-center">
 
-                                <NavLink
-                                    :href="route('estudiantes.index')"
-                        
-                                >
-                                    Estudiantes
-                                </NavLink>
-                            </div>
+                    <!-- Logo + Links -->
+                    <div class="flex items-center space-x-8">
+                        <div class="shrink-0">
+                            <Link :href="route('dashboard')">
+                                <ApplicationLogo class="block h-9 w-auto text-gray-700 hover:scale-105 transition-transform duration-200" />
+                            </Link>
                         </div>
 
-                        <div class="hidden sm:ms-6 sm:flex sm:items-center">
-                            <!-- Settings Dropdown -->
-                            <div class="relative ms-3">
-                                <Dropdown align="right" width="48">
-                                    <template #trigger>
-                                        <span class="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
-                                            >
-                                                {{ $page.props.auth.user.name }}
-
-                                                <svg
-                                                    class="-me-0.5 ms-2 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fill-rule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clip-rule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </template>
-
-                                    <template #content>
-                                        <DropdownLink
-                                            :href="route('profile.edit')"
-                                        >
-                                            Profile
-                                        </DropdownLink>
-                                        <DropdownLink
-                                            :href="route('logout')"
-                                            method="post"
-                                            as="button"
-                                        >
-                                            Log Out
-                                        </DropdownLink>
-                                    </template>
-                                </Dropdown>
-                            </div>
-                        </div>
-
-                        <!-- Hamburger -->
-                        <div class="-me-2 flex items-center sm:hidden">
-                            <button
-                                @click="
-                                    showingNavigationDropdown =
-                                        !showingNavigationDropdown
-                                "
-                                class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
-                            >
-                                <svg
-                                    class="h-6 w-6"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        :class="{
-                                            hidden: showingNavigationDropdown,
-                                            'inline-flex':
-                                                !showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        :class="{
-                                            hidden: !showingNavigationDropdown,
-                                            'inline-flex':
-                                                showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
+                        <!-- Links -->
+                        <div class="hidden sm:flex space-x-6">
+                            <NavLink :href="route('dashboard')" :active="route().current('dashboard')">Dashboard</NavLink>
+                            <NavLink :href="route('estudiantes.index')" :active="route().current('estudiantes.*')">Estudiantes</NavLink>
+                            <NavLink :href="route('cuentas.index')" :active="route().current('cuentas.*')">Cuentas</NavLink>
                         </div>
                     </div>
-                </div>
 
-                <!-- Responsive Navigation Menu -->
-                <div
-                    :class="{
-                        block: showingNavigationDropdown,
-                        hidden: !showingNavigationDropdown,
-                    }"
-                    class="sm:hidden"
-                >
-                    <div class="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                    <!-- Usuario -->
+                    <div class="hidden sm:flex sm:items-center">
+                        <Dropdown align="right" width="48">
+                            <template #trigger>
+                                <button
+                                    type="button"
+                                    class="inline-flex items-center gap-1 rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-all duration-150"
+                                >
+                                    {{ $page.props.auth.user.name }}
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </template>
+
+                            <template #content>
+                                <DropdownLink :href="route('profile.edit')">Perfil</DropdownLink>
+
+                                <!-- 🔒 Botón con animación de confirmación -->
+                                <button
+                                    @click="confirmLogout"
+                                    class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-200"
+                                >
+                                    Cerrar sesión
+                                </button>
+                            </template>
+                        </Dropdown>
+                    </div>
+
+                    <!-- Botón hamburguesa -->
+                    <div class="flex items-center sm:hidden">
+                        <button
+                            @click="showingNavigationDropdown = !showingNavigationDropdown"
+                            class="rounded-md p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition"
                         >
-                            Dashboard
-                        </ResponsiveNavLink>
-                    </div>
-
-                    <!-- Responsive Settings Options -->
-                    <div
-                        class="border-t border-gray-200 pb-1 pt-4"
-                    >
-                        <div class="px-4">
-                            <div
-                                class="text-base font-medium text-gray-800"
-                            >
-                                {{ $page.props.auth.user.name }}
-                            </div>
-                            <div class="text-sm font-medium text-gray-500">
-                                {{ $page.props.auth.user.email }}
-                            </div>
-                        </div>
-
-                        <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')">
-                                Profile
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                :href="route('logout')"
-                                method="post"
-                                as="button"
-                            >
-                                Log Out
-                            </ResponsiveNavLink>
-                        </div>
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    v-if="!showingNavigationDropdown"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16"
+                                />
+                                <path
+                                    v-else
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
+                            </svg>
+                        </button>
                     </div>
                 </div>
-            </nav>
+            </div>
 
-            <!-- Page Heading -->
-            <header
-                class="bg-white shadow"
-                v-if="$slots.header"
-            >
-                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <!-- Menú responsive -->
+            <div v-show="showingNavigationDropdown" class="sm:hidden bg-white border-t border-gray-200 shadow-inner animate-fadeIn">
+                <div class="space-y-1 px-4 py-3">
+                    <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">Dashboard</ResponsiveNavLink>
+                    <ResponsiveNavLink :href="route('estudiantes.index')" :active="route().current('estudiantes.*')">Estudiantes</ResponsiveNavLink>
+                    <ResponsiveNavLink :href="route('cuentas.index')" :active="route().current('cuentas.*')">Cuentas</ResponsiveNavLink>
+                </div>
+
+                <!-- Usuario móvil -->
+                <div class="border-t border-gray-100 px-4 py-3 bg-gray-50">
+                    <div class="text-base font-medium text-gray-800">{{ $page.props.auth.user.name }}</div>
+                    <div class="text-sm font-medium text-gray-500">{{ $page.props.auth.user.email }}</div>
+
+                    <div class="mt-3 space-y-1">
+                        <ResponsiveNavLink :href="route('profile.edit')">Perfil</ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('logout')" method="post" as="button">Cerrar sesión</ResponsiveNavLink>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 💫 Encabezado -->
+        <header v-if="$slots.header" class="bg-white/90 backdrop-blur-sm shadow-md">
+            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <h1 class="text-2xl font-semibold text-gray-800 tracking-tight">
                     <slot name="header" />
-                </div>
-            </header>
+                </h1>
+            </div>
+        </header>
 
-            <!-- Page Content -->
-            <main>
+        <!-- 🌟 Contenido -->
+        <main class="py-6 animate-fadeIn">
+            <transition name="fade" mode="out-in">
                 <slot />
-            </main>
-        </div>
+            </transition>
+        </main>
+
+        <!-- 🧩 Modal de confirmación de logout -->
+        <transition name="fade">
+            <div
+                v-if="showLogoutConfirm"
+                class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+            >
+                <div class="bg-white rounded-lg shadow-xl p-6 w-80 animate-scaleUp">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">¿Cerrar sesión?</h3>
+                    <p class="text-gray-600 text-sm mb-5">
+                        Tu sesión actual se cerrará y deberás volver a iniciar sesión.
+                    </p>
+                    <div class="flex justify-end space-x-3">
+                        <button
+                            @click="cancelLogout"
+                            class="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 text-gray-700 font-medium transition"
+                        >
+                            Cancelar
+                        </button>
+                        <Link
+                            :href="route('logout')"
+                            method="post"
+                            as="button"
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium shadow-sm transition"
+                        >
+                            Sí, salir
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+/* Escala suave del modal */
+@keyframes scaleUp {
+    0% {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+.animate-scaleUp {
+    animation: scaleUp 0.25s ease-out;
+}
+
+/* Fade para el menú responsive */
+.animate-fadeIn {
+    animation: fadeIn 0.4s ease;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>

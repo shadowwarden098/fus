@@ -255,12 +255,6 @@
             </div>
           </div>
 
-          <div class="details-grid">
-            <div class="detail-item">
-              <div class="detail-label">Dirección</div>
-              <div class="detail-value">{{ $estudiante->direccion ?? 'No registrada' }}</div>
-            </div>
-          </div>
 
           <div class="actions-footer">
             <a href="{{ route('estudiantes.edit', $estudiante->id) }}" class="btn-edit">✏️ Editar</a>

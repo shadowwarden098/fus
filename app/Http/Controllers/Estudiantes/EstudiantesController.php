@@ -29,7 +29,7 @@ class EstudiantesController extends Controller
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
             'segundo_apellido' => 'nullable|string|max:255',
-            'direccion' => 'nullable|string|max:255',
+          
             'dni' => 'required|digits:8|unique:estudiantes,dni',
         ], [
             'codigo.required' => 'El código del estudiante es obligatorio.',
@@ -64,7 +64,7 @@ class EstudiantesController extends Controller
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
             'segundo_apellido' => 'nullable|string|max:255',
-            'direccion' => 'nullable|string|max:255',
+           
             'dni' => 'required|digits:8|unique:estudiantes,dni,' . $id,
         ], [
             'codigo.required' => 'El código del estudiante es obligatorio.',

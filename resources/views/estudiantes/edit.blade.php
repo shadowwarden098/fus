@@ -197,10 +197,7 @@ input:focus {
     <input type="text" id="segundo_apellido" name="segundo_apellido" value="{{ old('segundo_apellido', $estudiante->segundo_apellido) }}" required>
   </div>
 
-  <div>
-    <label for="direccion">Dirección:</label>
-    <input type="text" id="direccion" name="direccion" value="{{ old('direccion', $estudiante->direccion) }}" required>
-  </div>
+ 
 
   <div>
     <label for="dni">DNI:</label>

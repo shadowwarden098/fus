@@ -157,10 +157,7 @@ input:focus {
     <input type="text" id="segundo_apellido" name="segundo_apellido" placeholder="Ingresa el segundo apellido">
   </div>
 
-  <div>
-    <label for="direccion">Dirección:</label>
-    <input type="text" id="direccion" name="direccion" placeholder="Ejemplo: Jr. Lima 123 - Huánuco">
-  </div>
+  
 
   <div>
     <label for="dni">DNI:</label>

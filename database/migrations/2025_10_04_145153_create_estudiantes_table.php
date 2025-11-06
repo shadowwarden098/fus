@@ -10,12 +10,12 @@ return new class extends Migration
     {
         Schema::create('estudiantes', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo', 20)->unique();          // 🆕 Código único del estudiante
-            $table->string('nombre');                        // Nombre
-            $table->string('apellido');                      // Primer apellido
-            $table->string('segundo_apellido')->nullable();  // 🆕 Segundo apellido (opcional)
-            $table->string('direccion')->nullable();         // 🆕 Dirección (opcional)
-            $table->string('dni')->unique();                 // DNI único
+            $table->string('codigo', 50)->unique();           // Código único del estudiante
+            $table->string('nombre', 255);                    // Nombre
+            $table->string('apellido', 255);                  // Primer apellido
+            $table->string('segundo_apellido', 255)->nullable(); // Segundo apellido opcional
+            $table->string('direccion', 255)->nullable();     // Dirección opcional
+            $table->string('dni', 20)->unique();              // DNI único
             $table->timestamps();
         });
     }
