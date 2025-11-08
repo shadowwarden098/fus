@@ -5,7 +5,7 @@
     <!-- Fondo animado oscuro estilo Shadow Warden -->
     <div class="absolute inset-0 overflow-hidden z-0">
       <img
-        src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fpics.alphacoders.com%2Fpictures%2Fview%2F593892&psig=AOvVaw3U29DiTUxqBYav05UuuHQv&ust=1762531370808000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCIiGgpXz3ZADFQAAAAAdAAAAABAj"
+        src="/imagenes/shadow-background.jpg"
         alt="Shadow Warden Background"
         class="w-full h-full object-cover opacity-40 animate-fadeIn"
       />
@@ -17,38 +17,39 @@
     <!-- Logo del sistema -->
     <div class="z-10 mb-8 animate-fadeDown">
       <img
-        src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fepicstream.com%2Farticle%2Fcid-kagenou-powers&psig=AOvVaw3U29DiTUxqBYav05UuuHQv&ust=1762531370808000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCIiGgpXz3ZADFQAAAAAdAAAAABBG"
+        src="/imagenes/shadow-logo.png"
         alt="Logo Shadow Warden Style"
-        class="w-64 mx-auto drop-shadow-[0_0_25px_rgba(255,0,0,0.6)] hover:scale-110 transition-transform duration-500"
+        class="w-64 mx-auto drop-shadow-[0_0_25px_rgba(138,43,226,0.8)] hover:scale-110 transition-transform duration-500"
       />
     </div>
 
     <!-- Título -->
     <h1
-      class="z-10 text-5xl sm:text-6xl font-extrabold text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] animate-glow"
+      class="z-10 text-5xl sm:text-6xl font-extrabold text-white drop-shadow-[0_0_15px_rgba(138,43,226,0.8)] animate-glow"
     >
-      Bienvenido al Sistema Shadow Warden
+      Bienvenido al Sistema Shadow Garden
     </h1>
 
     <!-- Subtítulo -->
     <p
       class="z-10 text-lg text-gray-300 mt-4 max-w-2xl leading-relaxed animate-fadeIn"
     >
-      Administra estudiantes y cuentas con la elegancia de las sombras.
+      Administra estudiantes y cuentas con la elegancia de las sombras. <br>
+      <span class="text-purple-400 font-semibold italic">"I am Atomic"</span>
     </p>
 
     <!-- Botones -->
     <div class="z-10 mt-10 flex gap-6">
       <Link
         :href="route('login')"
-        class="px-8 py-3 bg-gradient-to-r from-red-600 to-red-800 text-white rounded-lg shadow-lg font-bold hover:from-red-500 hover:to-red-700 hover:scale-105 transition-all duration-300 border border-red-400/50"
+        class="px-8 py-3 bg-gradient-to-r from-purple-700 to-purple-900 text-white rounded-lg shadow-lg font-bold hover:from-purple-600 hover:to-purple-800 hover:scale-105 transition-all duration-300 border border-purple-400/50 shadow-[0_0_20px_rgba(138,43,226,0.5)]"
       >
         Iniciar Sesión
       </Link>
 
       <Link
         :href="route('register')"
-        class="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg shadow-lg font-bold hover:from-blue-500 hover:to-blue-700 hover:scale-105 transition-all duration-300 border border-blue-400/50"
+        class="px-8 py-3 bg-gradient-to-r from-slate-700 to-slate-900 text-white rounded-lg shadow-lg font-bold hover:from-slate-600 hover:to-slate-800 hover:scale-105 transition-all duration-300 border border-slate-400/50"
       >
         Registrarse
       </Link>
@@ -58,12 +59,17 @@
     <div
       class="absolute top-12 left-12 text-purple-500 opacity-80 animate-floating text-4xl"
     >
-      ✨
+      ⚡
     </div>
     <div
-      class="absolute bottom-16 right-16 text-red-500 opacity-80 animate-floating-delay text-5xl"
+      class="absolute bottom-16 right-16 text-purple-400 opacity-80 animate-floating-delay text-5xl"
     >
-      ⚔️
+      🌙
+    </div>
+    <div
+      class="absolute top-1/3 right-12 text-indigo-400 opacity-60 animate-floating text-3xl"
+    >
+      ✨
     </div>
   </div>
 </template>
@@ -96,10 +102,10 @@ import { Link } from '@inertiajs/vue3';
 }
 @keyframes glow {
   0%, 100% {
-    text-shadow: 0 0 25px rgba(255,255,255,0.9), 0 0 45px rgba(255,0,0,0.7);
+    text-shadow: 0 0 25px rgba(138,43,226,0.9), 0 0 45px rgba(138,43,226,0.7);
   }
   50% {
-    text-shadow: 0 0 35px rgba(255,200,200,1), 0 0 60px rgba(255,50,50,0.9);
+    text-shadow: 0 0 35px rgba(186,85,211,1), 0 0 60px rgba(138,43,226,0.9);
   }
 }
 @keyframes floating {
